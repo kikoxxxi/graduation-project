@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+    <div class="header">
+        <h1>Search Hear!</h1>
+        <form class="pure-form" action="/search/" method="get">
+            <input class="pure-input-3-3" type="text" name="product_name" placeholder="">
+            <h2>Input the product's name</h2>
+        </form>
+    </div>
+    
+    {% if error %}
+        <h2 class="post-title">还没有此商品的数据，您可以提交至管理员，请耐心等候几天。</h2>
+    {% else %}           
+        {% for product in product_list %}
+            <section class="post">
+                <header class="post-header">
+                    <h2 class="post-title"><a href="{% url "detail" id=product.id %}">{{ product.product_name }}</a></h2>
+                        <p class="post-meta">
+                            Category: <a class="post-category post-category-js" href="{% url "search_tag" tag=product.product_category %}">{{ product.product_category }}</a>
+                        </p>
+                </header>
+            </section>
+        {% empty%}
+            <h5 class="post-title">还没有此商品的数据，您可以提交至管理员，请耐心等候几天。</h5>
+        {% endfor %}
+        {% if product_list.object_list and product_list.paginator.num_pages > 1 %}
+            <div>
+                <ul class="pager pure-menu-list">
+                    {% if product_list.has_previous %}
+                        <li class="pure-menu-item"><a href="?page={{ product_list.previous_page_number }}">上一页</a></li>
+                    {% endif %}
+
+                    {% if product_list.has_next %}
+                        <li class="pure-menu-item"><a href="?page={{ product_list.next_page_number }}">下一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

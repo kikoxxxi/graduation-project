@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="posts">
+    {% for product in product_list %}
+        <section class="post">
+            <header class="post-header">
+                <h2 class="post-title"><a href="{% url "detail" id=product.id %}">{{ product.product_name }}</a></h2>
+                    <p class="post-meta">
+                        <a class="post-category post-category-js" href="{% url "search_tag" tag=product.product_category %}">{{ product.product_category|title }}</a>
+                    </p>
+            </header>
+        </section>
+    {% endfor %}
+</div>
+{% endblock %}
